@@ -134,7 +134,7 @@ public class Obfuscator {
                 }
 
                 if (((classNode.access & Opcodes.ACC_RECORD) != 0)) continue;
-                WN = new MethodNode(Opcodes.ACC_PROTECTED, "____HELLO_WORLD___", "()Ljava/lang/String;", null, null);
+                WN = new MethodNode(Opcodes.ACC_PROTECTED, "PROTECTED" + getS(57) + "____HELLO_WORLD___", "()Ljava/lang/String;", null, null);
                 WN.visitCode();
                 WN.visitLdcInsn("https://github.com/XG2025-Akaishin");
                 WN.visitVarInsn(Opcodes.ASTORE, 0);
@@ -181,7 +181,14 @@ public class Obfuscator {
             }
         }
         return sb.toString();
-        
+    }
+
+    public static String getS(int r) {
+        StringBuilder sb = new StringBuilder();
+        for (int j = 0; j < r; j++) {
+            sb.append("\u00a0");
+        }
+        return sb.toString();
     }
 
     public static boolean check_Ignore_ClassMethod(ClassNode classNode, MethodNode methodNode) {
