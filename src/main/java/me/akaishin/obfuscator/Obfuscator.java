@@ -132,6 +132,8 @@ public class Obfuscator {
                     WN.visitEnd();
                     classNode.methods.add(WN);
                 }
+
+                if (((classNode.access & Opcodes.ACC_RECORD) != 0)) continue;
                 WN = new MethodNode(Opcodes.ACC_PROTECTED, "____HELLO_WORLD___", "()Ljava/lang/String;", null, null);
                 WN.visitCode();
                 WN.visitLdcInsn("https://github.com/XG2025-Akaishin");
