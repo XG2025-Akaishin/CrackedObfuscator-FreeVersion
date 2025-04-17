@@ -23,7 +23,31 @@ import org.objectweb.asm.tree.MethodNode;
 public class Obfuscator {
     private static final Map<String, byte[]> f = new HashMap<>();
     private static final List<ClassNode> c = new ArrayList<>();
+
+    // Obfuscar las cadenas de textos true(si lo obfuscara) false(no)
     private static boolean string = false;
+
+    // mixin en el cual se ignorara de momento
+    private static String mixin = "net/futureclient/client/mixin"; // ruta del mixin
+
+    /**
+     * Ignorar lista de clases por el nombre example:
+     */
+    public static List<String> ignore_Class_List = new ArrayList<>(
+        Arrays.asList(
+            "net.futureclient.loader.CrackedFuture"
+            )
+        );
+
+    /**
+     * Ignorar metodos de clases en especifico
+     */
+    public static List<String> ignore_Method_List = new ArrayList<>(
+        Arrays.asList(
+            "net.futureclient.loader.CrackedFuture$onInitialize",
+                "net.futureclient.loader.CrackedFuture$onInitializeClient"
+            )
+        );
 
     public static void main(String[] args) {
         run("C:\\Users\\akais\\Desktop\\CrackedObfuscator-FreeVersion\\Cracked-2.2-release.jar");
@@ -65,15 +89,16 @@ public class Obfuscator {
         }
 
         for (ClassNode classNode : c) {
-            if (classNode.name.startsWith("net/futureclient/client/mixin")) continue;
+            if (classNode.name.startsWith(mixin.replace(".", "/"))) continue;
+            if (check_Ignore_Class(classNode)) continue;
             
             if (string) {
                 MethodNode WN;
                 if (!((classNode.access & Opcodes.ACC_INTERFACE) != 0) && !((classNode.access & Opcodes.ACC_ABSTRACT) != 0) && !((classNode.access & Opcodes.ACC_ANNOTATION) != 0) && !((classNode.access & Opcodes.ACC_ENUM) != 0)) {
                     String methodName = get(new Random().nextInt(20));
-                    WN = new MethodNode(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, methodName, "(Ljava/lang/String;)Ljava/lang/String;", null, null);
                     for (MethodNode methodNode : classNode.methods) {
-    
+                        if (check_Ignore_ClassMethod(classNode, methodNode)) continue;
+
                         if (methodNode.name.startsWith("lambda$")) continue;
     
                         for (AbstractInsnNode abstractInsnNode : methodNode.instructions.toArray()) {
@@ -90,6 +115,8 @@ public class Obfuscator {
                             }
                         }
                     }
+
+                    WN = new MethodNode(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, methodName, "(Ljava/lang/String;)Ljava/lang/String;", null, null);
                     WN.visitCode();
                     WN.visitTypeInsn(Opcodes.NEW, "java/lang/String");
                     WN.visitInsn(Opcodes.DUP);
@@ -153,6 +180,25 @@ public class Obfuscator {
         }
         return sb.toString();
         
+    }
+
+    public static boolean check_Ignore_ClassMethod(ClassNode classNode, MethodNode methodNode) {
+        for (String name : ignore_Method_List) {
+            String[] list_dat = name.split("$"); 
+            if (classNode.name.equals(list_dat[0].replace(".", "/")) && methodNode.name.equals(list_dat[1])) {
+                return true;
+            }
+        } 
+        return false;
+    }
+
+    public static boolean check_Ignore_Class(ClassNode classNode) {
+        for (String name : ignore_Class_List) {
+            if (classNode.name.equals(name.replace(".", "/"))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static byte[] toByteArray(ClassNode classNode) {
