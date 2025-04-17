@@ -1,2 +1,9 @@
-# Compiled class file
-*.class
+.gradle
+.vscode
+/run
+/build
+/bin
+/test
+/ANONIMUS
+Cracked-2.2-release-Obfuscated.jar
+Cracked-2.2-release.jar
