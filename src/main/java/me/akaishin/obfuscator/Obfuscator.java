@@ -25,7 +25,7 @@ public class Obfuscator {
     private static final List<ClassNode> c = new ArrayList<>();
 
     // Obfuscar las cadenas de textos true(si lo obfuscara) false(no)
-    private static boolean string = false;
+    private static boolean string = true;
 
     // mixin en el cual se ignorara de momento
     private static String mixin = "net/futureclient/client/mixin"; // ruta del mixin
@@ -94,7 +94,7 @@ public class Obfuscator {
             
             if (string) {
                 MethodNode WN;
-                if (!((classNode.access & Opcodes.ACC_INTERFACE) != 0) && !((classNode.access & Opcodes.ACC_ABSTRACT) != 0) && !((classNode.access & Opcodes.ACC_ANNOTATION) != 0) && !((classNode.access & Opcodes.ACC_ENUM) != 0)) {
+                if (!((classNode.access & Opcodes.ACC_INTERFACE) != 0) && !((classNode.access & Opcodes.ACC_ABSTRACT) != 0) && !((classNode.access & Opcodes.ACC_ANNOTATION) != 0) && !((classNode.access & Opcodes.ACC_ENUM) != 0) && !((classNode.access & Opcodes.ACC_RECORD) != 0)) {
                     String methodName = get(new Random().nextInt(20));
                     for (MethodNode methodNode : classNode.methods) {
                         if (check_Ignore_ClassMethod(classNode, methodNode)) continue;
