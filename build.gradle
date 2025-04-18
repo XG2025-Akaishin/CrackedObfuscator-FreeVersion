@@ -29,26 +29,14 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.apache.bcel:bcel:6.10.0'
     implementation 'net.java.dev.jna:jna:5.10.0'
     implementation 'org.json:json:20210307'
     implementation 'com.google.code.gson:gson:2.10'
-    implementation 'com.formdev:flatlaf:3.0'
-	//implementation 'com.google.guava:guava:32.1.3-jre's
 	implementation 'com.google.guava:guava:33.3.1-jre'
-	//api 'com.google.guava:guava:33.3.1-jre'
 	//Others
     implementation 'commons-codec:commons-codec:1.9'//impoet cool
 	implementation 'commons-io:commons-io:2.15.1'
 	implementation 'org.apache.commons:commons-lang3:3.3.2'
-	implementation 'net.dv8tion:JDA:5.0.0-beta.15'
-	implementation 'org.slf4j:slf4j-simple:1.7.32'
-	//harwart
-	implementation 'javax.media:jmf:2.1.1e'
-	implementation 'javax.servlet:javax.servlet-api:4.0.1'
-	//ssl certificate
-	implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
-	implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
 	//ASM
     implementation 'org.ow2.asm:asm:9.5'
     implementation 'org.ow2.asm:asm-commons:9.5'
