@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -28,6 +29,8 @@ import org.objectweb.asm.tree.TypeInsnNode;
 public class Obfuscator {
     private static final Map<String, byte[]> f = new HashMap<>();
     private static final List<ClassNode> c = new ArrayList<>();
+    private static final String ch = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final SecureRandom r = new SecureRandom();
 
     public static List<Data> Datas;
 
@@ -103,8 +106,7 @@ public class Obfuscator {
             if (string) {
                 MethodNode WN;
                 if (!((classNode.access & Opcodes.ACC_INTERFACE) != 0) && !((classNode.access & Opcodes.ACC_ABSTRACT) != 0) && !((classNode.access & Opcodes.ACC_ANNOTATION) != 0) && !((classNode.access & Opcodes.ACC_ENUM) != 0) && !((classNode.access & Opcodes.ACC_RECORD) != 0)) {
-                    String fieldName = "cache";
-                    String nameMethod = "decrypt";
+                    String fieldName = get(new Random().nextInt(20));
                     String nms = "decrypt";
                     classNode.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, fieldName, "[Ljava/lang/String;", null, null);
                     Datas = new ArrayList<>(); 
@@ -125,7 +127,7 @@ public class Obfuscator {
                                     il.add(new LdcInsnNode(counter));
                                     il.add(new InsnNode(Opcodes.AALOAD));
 
-                                    String k = "key";
+                                    String k = GEN(1 + new Random().nextInt(47));
 
                                     Datas.add(new Data( encrypt(s, k), k, counter));
 
@@ -154,7 +156,7 @@ public class Obfuscator {
                         instructions.add(new LdcInsnNode(sb27Data.getNumber()));
                         instructions.add(new LdcInsnNode(sb27Data.getData_String()));
                         instructions.add(new LdcInsnNode(sb27Data.getKey_String()));
-                        instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, classNode.name, nameMethod, "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;", false));
+                        instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, classNode.name, methodName, "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;", false));
                         instructions.add(new InsnNode(Opcodes.AASTORE));
                     }
 
@@ -213,6 +215,15 @@ public class Obfuscator {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String GEN(int c) {
+        StringBuilder result = new StringBuilder(c);
+        for (int i = 0; i < c; i++) {
+            int d = r.nextInt(ch.length());
+            result.append(ch.charAt(d));
+        }
+        return result.toString();
     }
 
     public static ClassNode t() throws IOException {
