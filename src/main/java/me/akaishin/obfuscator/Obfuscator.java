@@ -31,6 +31,7 @@ public class Obfuscator {
     private static final List<ClassNode> c = new ArrayList<>();
     private static final String ch = "abcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom r = new SecureRandom();
+    public static int counter = 0;
 
     public static List<Data> Datas;
 
@@ -38,7 +39,7 @@ public class Obfuscator {
     private static boolean string = true;
 
     // mixin en el cual se ignorara de momento
-    private static String mixin = "net/futureclient/client/mixin"; // ruta del mixin
+    private static String mixin = "net.futureclient.client.mixin"; // ruta del mixin
 
     /**
      * Ignorar lista de clases por el nombre example:
@@ -63,7 +64,6 @@ public class Obfuscator {
         run("C:\\Users\\akais\\Desktop\\CrackedObfuscator-FreeVersion\\Cracked-2.2-release.jar");
     }
 
-    public static int counter = 0;
     public static void run(String path) {
         File file = new File(path);
 
@@ -101,7 +101,9 @@ public class Obfuscator {
 
         for (ClassNode classNode : c) {
             counter = 0;
-            if (classNode.name.startsWith(mixin.replace(".", "/"))) continue;
+            if (!mixin.isEmpty()) {
+                if (classNode.name.startsWith(mixin.replace(".", "/"))) continue;
+            }
             if (check_Ignore_Class(classNode)) continue;
             if (string) {
                 MethodNode WN;
