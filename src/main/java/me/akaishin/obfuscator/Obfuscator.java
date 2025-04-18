@@ -108,11 +108,11 @@ public class Obfuscator {
             if (string) {
                 MethodNode WN;
                 if (!((classNode.access & Opcodes.ACC_INTERFACE) != 0) && !((classNode.access & Opcodes.ACC_ABSTRACT) != 0) && !((classNode.access & Opcodes.ACC_ANNOTATION) != 0) && !((classNode.access & Opcodes.ACC_ENUM) != 0) && !((classNode.access & Opcodes.ACC_RECORD) != 0)) {
-                    String fieldName = get(new Random().nextInt(20));
+                    String fieldName = get(1 + new Random().nextInt(20));
                     String nms = "decrypt";
                     classNode.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, fieldName, "[Ljava/lang/String;", null, null);
                     Datas = new ArrayList<>(); 
-                    String methodName = get(new Random().nextInt(20));
+                    String methodName = get(1 + new Random().nextInt(20));
                     for (MethodNode methodNode : classNode.methods) {
                         if (check_Ignore_ClassMethod(classNode, methodNode)) continue;
 
@@ -249,7 +249,6 @@ public class Obfuscator {
         }
         return sb.toString();
     }
-    
 
     public static boolean check_Ignore_ClassMethod(ClassNode classNode, MethodNode methodNode) {
         for (String name : ignore_Method_List) {
