@@ -249,6 +249,7 @@ public class Obfuscator {
         }
         return sb.toString();
     }
+    
 
     public static boolean check_Ignore_ClassMethod(ClassNode classNode, MethodNode methodNode) {
         for (String name : ignore_Method_List) {
